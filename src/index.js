@@ -1,35 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = ({ course }) =>
-  <h1>{course.name}</h1>
+const Header = ({ name }) =>
+  <h1>{name}</h1>
 
-const Part = (props) =>
-  <p>{props.name} {props.exercises}</p>
+const Part = ({name, exercises}) =>
+  <p>{name} {exercises}</p>
 
+/*  Este componente renderiza "partes" las
+ *  cuales vienen a traves de un array de 
+ *  objetos en las props.
+ *
+ *  Lo interesante es que al utilizar el
+ *  metodo map, podemos renderizar tantas
+ *  partes como queramos sin tener que cambiar
+ *  el codigo.
+ */
 const Content = ({ parts }) => {
   return (
     <div>
-      <Part
-        name={parts[0].name}
-        exercises={parts[0].exercises}
-      />
-      <Part
-        name={parts[1].name}
-        exercises={parts[1].exercises}
-      />
-      <Part
-        name={parts[2].name}
-        exercises={parts[2].exercises}
-      />
+      {
+        parts.map(part => { 
+          return (
+            <Part
+              key={part.id}
+              name={part.name}
+              exercises={part.exercises}
+            />
+          );
+        })
+      }
     </div>
   );
 }
 
-const Total = ({ parts }) =>
-  <p>
-    Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
-  </p>
+// We don't need the sum of the excercises at this point
+// const Total = ({ parts }) =>
+//   <p>
+//     Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
+//   </p>
+
+const Course = ({ course }) => {
+  return (
+    <div>
+      <Header name={course.name} />
+      <Content parts={course.parts} />
+      {// We don't need the sum of the excercises at this point
+      /* <Total parts={course.parts} /> */}
+    </div>
+  );
+}
 
 const App = () => {
   const course = {
@@ -37,25 +57,29 @@ const App = () => {
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
-      }
-    ]
+        exercises: 14,
+        id: 3
+      },
+      {
+        name: 'Agustin is a coder guy',
+        exercises: 27,
+        id: 4
+      },
+    ],
   } 
 
   return (
-    <div>
-      <Header course={course} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
+    <Course course={course} />
   );
 }
 
