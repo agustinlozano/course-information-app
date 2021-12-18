@@ -34,19 +34,28 @@ const Content = ({ parts }) => {
   );
 }
 
-// We don't need the sum of the excercises at this point
-// const Total = ({ parts }) =>
-//   <p>
-//     Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
-//   </p>
+/*  Este componente realiza el calculo total
+ *  de ejercicios para todas las partes.
+ *  
+ *  Este calculo se realiza a partir de la
+ *  propiedad .excercies de cada parte, y el
+ *  metodo utilizado para ello es reduce.
+ * 
+ *  arr.reduce(callback, valorInicial)
+ */
+const Total = ({ parts }) => {
+  const counter = (count, current) => count + current.exercises;
+  const total = parts.reduce(counter, 0);
+
+  return <strong>Number of exercises {total}</strong>
+}
 
 const Course = ({ course }) => {
   return (
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
-      {// We don't need the sum of the excercises at this point
-      /* <Total parts={course.parts} /> */}
+      <Total parts={course.parts} />
     </div>
   );
 }
@@ -71,8 +80,8 @@ const App = () => {
         id: 3
       },
       {
-        name: 'Agustin is a coder guy',
-        exercises: 27,
+        name: 'Redux',
+        exercises: 11,
         id: 4
       },
     ],
